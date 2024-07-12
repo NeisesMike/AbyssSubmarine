@@ -549,6 +549,20 @@ namespace AbyssVehicle
             }
         }
 
+        public override List<Light> InteriorLights
+        {
+            get
+            {
+                List<Light> lights = new List<Light>
+                {
+                    transform.Find("InteriorLights/1").GetComponent<Light>(),
+                    transform.Find("InteriorLights/2").GetComponent<Light>(),
+                    transform.Find("InteriorLights/3").GetComponent<Light>(),
+                    transform.Find("InteriorLights/4").GetComponent<Light>()
+                };
+                return lights;
+            }
+        }
 
         public override ModVehicleEngine Engine
         {
