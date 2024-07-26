@@ -1,74 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
-using VehicleFramework;
-using System.IO;
-using System.Reflection;
-
-using UnityEngine.U2D;
 using VehicleFramework.VehicleParts;
 using VehicleFramework.VehicleTypes;
 using VehicleFramework.Engines;
+using VehicleFramework.Assets;
 
 namespace AbyssVehicle
 {
     public partial class Abyss : Submarine
     {
         public static GameObject model = null;
-        public static RuntimeAnimatorController animatorController = null;
-        public static GameObject controlPanel = null;
         public static Atlas.Sprite pingSprite = null;
         public static Atlas.Sprite crafterSprite = null;
+        public static GameObject controlPanel = null;
+        public static GameObject cameraGUI = null;
 
         public static void GetAssets()
         {
-            // load the asset bundle
-            string modPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            var myLoadedAssetBundle = AssetBundle.LoadFromFile(Path.Combine(modPath, "assets/abyss"));
-            if (myLoadedAssetBundle == null)
-            {
-                Logger.Log("ERROR: Failed to load AssetBundle.");
-                return;
-            }
-
-            System.Object[] arr = myLoadedAssetBundle.LoadAllAssets();
-            foreach (System.Object obj in arr)
-            {
-                if (obj.ToString().Contains("SpriteAtlas"))
-                {
-                    SpriteAtlas thisAtlas = (SpriteAtlas)obj;
-                    Sprite ping = thisAtlas.GetSprite("PingSprite"); 
-                    pingSprite = new Atlas.Sprite(ping);
-                    Sprite ping2 = thisAtlas.GetSprite("CrafterSprite");
-                    crafterSprite = new Atlas.Sprite(ping2);
-                }
-                else if (obj.ToString().Contains("Vehicle"))
-                {
-                    model = (GameObject)obj;
-                }
-                else if (obj.ToString().Contains("Control-Panel"))
-                {
-                    controlPanel = (GameObject)obj;
-                }
-                else if (obj.ToString().Contains("CameraGUI"))
-                {
-                    cameraGUI = (GameObject)obj;
-                }
-                else
-                {
-                    //Logger.Log(obj.ToString());
-                }
-            }
+            VehicleAssets abyssAssets = AssetBundleInterface.GetVehicleAssetsFromBundle("assets/abyss", "AbyssVehicle", "AbyssSpriteAtlas", "PingSprite", "CrafterSprite", "", "");
+            model = abyssAssets.model;
+            pingSprite = abyssAssets.ping;
+            crafterSprite = abyssAssets.crafter;
+            controlPanel = AssetBundleInterface.LoadAdditionalGameObject(abyssAssets.abi, "Control-Panel");
+            cameraGUI = AssetBundleInterface.LoadAdditionalGameObject(abyssAssets.abi, "CameraGUI");
         }
+
         public override Dictionary<TechType, int> Recipe
         {
             get
             {
-
                 Dictionary<TechType, int> recipe = new Dictionary<TechType, int>();
                 recipe.Add(TechType.PlasteelIngot, 2);
                 recipe.Add(TechType.Lubricant, 1);
@@ -78,13 +39,6 @@ namespace AbyssVehicle
                 recipe.Add(TechType.EnameledGlass, 2);
                 return recipe;
             }
-        }
-        public static IEnumerator Register()
-        {
-            GetAssets();
-            Submarine abyss = model.EnsureComponent<Abyss>() as Submarine;
-            abyss.name = "Abyss";
-            yield return UWE.CoroutineHost.StartCoroutine(VehicleRegistrar.RegisterVehicle(abyss));
         }
 
         public override string vehicleDefaultName
@@ -146,8 +100,28 @@ namespace AbyssVehicle
                 return model;
             }
         }
-
-
+        public override Atlas.Sprite PingSprite
+        {
+            get
+            {
+                return pingSprite;
+            }
+        }
+        public override Atlas.Sprite CraftingSprite
+        {
+            get
+            {
+                return crafterSprite;
+            }
+        }
+        public override GameObject ControlPanel
+        {
+            get
+            {
+                controlPanel.transform.SetParent(transform);
+                return controlPanel;
+            }
+        }
         public override GameObject StorageRootObject
         {
             get
@@ -155,7 +129,6 @@ namespace AbyssVehicle
                 return transform.Find("StorageRoot").gameObject;
             }
         }
-
         public override GameObject ModulesRootObject
         {
             get
@@ -163,7 +136,6 @@ namespace AbyssVehicle
                 return transform.Find("ModulesRoot").gameObject;
             }
         }
-
         public override List<VehiclePilotSeat> PilotSeats
         {
             get
@@ -180,7 +152,6 @@ namespace AbyssVehicle
                 return list;
             }
         }
-
         public override List<VehicleHatchStruct> Hatches
         {
             get
@@ -225,7 +196,6 @@ namespace AbyssVehicle
                 return list;
             }
         }
-
         public override List<VehicleStorage> InnateStorages
         {
             get
@@ -249,7 +219,6 @@ namespace AbyssVehicle
                 return list;
             }
         }
-
         public override List<VehicleStorage> ModularStorages
         {
             get
@@ -258,7 +227,6 @@ namespace AbyssVehicle
                 return list;
             }
         }
-
         public override List<VehicleUpgrades> Upgrades
         {
             get
@@ -276,7 +244,6 @@ namespace AbyssVehicle
                 return list;
             }
         }
-
         public override List<VehicleBattery> Batteries
         {
             get
@@ -296,7 +263,6 @@ namespace AbyssVehicle
                 return list;
             }
         }
-
         public override List<VehicleBattery> BackupBatteries
         {
             get
@@ -305,7 +271,6 @@ namespace AbyssVehicle
                 return null;
             }
         }
-
         public override List<VehicleFloodLight> HeadLights
         {
             get
@@ -356,7 +321,6 @@ namespace AbyssVehicle
                 return list;
             }
         }
-
         public override List<VehicleFloodLight> FloodLights
         {
             get
@@ -406,7 +370,6 @@ namespace AbyssVehicle
                 return list;
             }
         }
-
         public override List<GameObject> NavigationPortLights
         {
             get
@@ -414,7 +377,6 @@ namespace AbyssVehicle
                 return null;
             }
         }
-
         public override List<GameObject> NavigationStarboardLights
         {
             get
@@ -422,7 +384,6 @@ namespace AbyssVehicle
                 return null;
             }
         }
-
         public override List<GameObject> NavigationPositionLights
         {
             get
@@ -430,7 +391,6 @@ namespace AbyssVehicle
                 return null;
             }
         }
-
         public override List<GameObject> NavigationWhiteStrobeLights
         {
             get
@@ -438,7 +398,6 @@ namespace AbyssVehicle
                 return null;
             }
         }
-
         public override List<GameObject> NavigationRedStrobeLights
         {
             get
@@ -446,7 +405,6 @@ namespace AbyssVehicle
                 return null;
             }
         }
-
         public override List<GameObject> WaterClipProxies
         {
             get
@@ -459,7 +417,6 @@ namespace AbyssVehicle
                 return list;
             }
         }
-
         public override List<GameObject> CanopyWindows
         {
             get
@@ -471,7 +428,6 @@ namespace AbyssVehicle
                 return list;
             }
         }
-
         public override List<GameObject> TetherSources
         {
             get
@@ -498,7 +454,6 @@ namespace AbyssVehicle
                 return transform.Find("Fabricator-Location").gameObject;
             }
         }
-
         public override GameObject BoundingBox
         {
             get
@@ -506,16 +461,6 @@ namespace AbyssVehicle
                 return transform.Find("BoundingBox").gameObject;
             }
         }
-
-        public override GameObject ControlPanel
-        {
-            get
-            {
-                controlPanel.transform.SetParent(transform);
-                return controlPanel;
-            }
-        }
-
         public override GameObject CollisionModel
         {
             get
@@ -523,7 +468,6 @@ namespace AbyssVehicle
                 return transform.Find("CollisionModel").gameObject;
             }
         }
-
         public override GameObject LeviathanGrabPoint
         {
             get
@@ -531,7 +475,6 @@ namespace AbyssVehicle
                 return PilotSeats.First().SitLocation;
             }
         }
-
         public override GameObject SteeringWheelLeftHandTarget
         {
             get
@@ -548,7 +491,6 @@ namespace AbyssVehicle
                 return null;
             }
         }
-
         public override List<Light> InteriorLights
         {
             get
@@ -563,7 +505,6 @@ namespace AbyssVehicle
                 return lights;
             }
         }
-
         public override ModVehicleEngine Engine
         {
             get
@@ -571,15 +512,6 @@ namespace AbyssVehicle
                 return gameObject.EnsureComponent<AbyssEngine>();
             }
         }
-
-        public override Atlas.Sprite PingSprite
-        {
-            get
-            {
-                return pingSprite;
-            }
-        }
-
         public override int BaseCrushDepth
         {
             get
@@ -587,7 +519,6 @@ namespace AbyssVehicle
                 return 600;
             }
         }
-
         public override int MaxHealth
         {
             get
@@ -595,7 +526,6 @@ namespace AbyssVehicle
                 return 1500;
             }
         }
-
         public override int Mass
         {
             get
@@ -603,7 +533,6 @@ namespace AbyssVehicle
                 return 5000;
             }
         }
-
         public override int NumModules
         {
             get
@@ -611,20 +540,11 @@ namespace AbyssVehicle
                 return 8;
             }
         }
-
         public override bool HasArms
         {
             get
             {
                 return false;
-            }
-        }
-
-        public override Atlas.Sprite CraftingSprite
-        {
-            get
-            {
-                return crafterSprite;
             }
         }
     }

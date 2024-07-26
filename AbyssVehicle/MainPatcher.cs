@@ -1,19 +1,10 @@
-﻿using System;
-using System.IO;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using HarmonyLib;
-using UnityEngine;
-using System.Runtime.CompilerServices;
-using System.Collections;
+﻿using HarmonyLib;
 using BepInEx;
-using BepInEx.Logging;
-using BepInEx.Bootstrap;
 using Nautilus.Json;
 using Nautilus.Options.Attributes;
 using Nautilus.Handlers;
+using VehicleFramework;
+using VehicleFramework.VehicleTypes;
 
 /*
  * "Pilot Seat" (https://skfb.ly/ot766) by ali_hidayat is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
@@ -21,19 +12,6 @@ using Nautilus.Handlers;
 
 namespace AbyssVehicle
 {
-    public static class Logger
-    {
-        public static ManualLogSource MyLog { get; set; }
-        public static void Warn(string message)
-        {
-            MyLog.LogWarning("[AbyssVehicle] " + message);
-        }
-        public static void Log(string message)
-        {
-            MyLog.LogInfo("[AbyssVehicle] " + message);
-        }
-    }
-
     [BepInPlugin("com.mikjaw.subnautica.abyss.mod", "AbyssVehicle", "1.3.2")]
     [BepInDependency("com.mikjaw.subnautica.vehicleframework.mod")]
     [BepInDependency("com.snmodding.nautilus")]
@@ -44,12 +22,23 @@ namespace AbyssVehicle
         public void Start()
         {
             config = OptionsPanelHandler.RegisterModOptions<AbyssVehicleConfig>();
-            AbyssVehicle.Logger.MyLog = base.Logger;
             var harmony = new Harmony("com.mikjaw.subnautica.abyss.mod");
             harmony.PatchAll();
-            UWE.CoroutineHost.StartCoroutine(Abyss.Register());
+            Abyss.GetAssets();
+            Submarine abyss = Abyss.model.EnsureComponent<Abyss>() as Submarine;
+            abyss.name = "Abyss"; // hovertext and spawn-command name
+            VehicleRegistrar.RegisterVehicleLater(abyss); // set it and forget it
+            //UWE.CoroutineHost.StartCoroutine(Register(abyss)); // manage registration closely
+        }
+
+        public System.Collections.IEnumerator Register(Submarine abyss)
+        {
+            UnityEngine.Coroutine abyssRegistration = UWE.CoroutineHost.StartCoroutine(VehicleRegistrar.RegisterVehicle(abyss));
+            yield return abyssRegistration;
+            // do something after registration is complete
         }
     }
+
     [Menu("Abyss Vehicle Options")]
     public class AbyssVehicleConfig : ConfigFile
     {

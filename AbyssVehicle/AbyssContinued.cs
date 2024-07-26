@@ -19,7 +19,6 @@ namespace AbyssVehicle
 {
     public partial class Abyss : Submarine
     {
-        public static GameObject cameraGUI = null;
         Dictionary<string, GameObject> guiCanvases = new Dictionary<string, GameObject>();
         public MVCameraController cams = null;
         private Transform bottomCam => transform.Find("RoundCamera1/Inner_corpuse/Lens_camera/Camera");
