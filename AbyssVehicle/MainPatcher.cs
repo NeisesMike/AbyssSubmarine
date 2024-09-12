@@ -13,8 +13,8 @@ using VehicleFramework.VehicleTypes;
 namespace AbyssVehicle
 {
     [BepInPlugin("com.mikjaw.subnautica.abyss.mod", "AbyssVehicle", "1.3.2")]
-    [BepInDependency("com.mikjaw.subnautica.vehicleframework.mod")]
-    [BepInDependency("com.snmodding.nautilus")]
+    [BepInDependency(VehicleFramework.PluginInfo.PLUGIN_GUID, VehicleFramework.PluginInfo.PLUGIN_VERSION)]
+    [BepInDependency(Nautilus.PluginInfo.PLUGIN_GUID)]
     public class MainPatcher : BaseUnityPlugin
     {
         internal static AbyssVehicleConfig config { get; private set; }
