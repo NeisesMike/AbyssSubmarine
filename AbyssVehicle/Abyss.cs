@@ -547,5 +547,18 @@ namespace AbyssVehicle
                 return false;
             }
         }
+        public override VehicleArmsProxy Arms
+        {
+            get
+            {
+                return new VehicleArmsProxy
+                {
+                    leftArmPlacement = transform.Find("LeftArmPlace"),
+                    rightArmPlacement = transform.Find("RightArmPlace"),
+                    originalLeftArm = null,
+                    originalRightArm = null
+                };
+            }
+        }
     }
 }
