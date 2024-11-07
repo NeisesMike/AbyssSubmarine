@@ -12,6 +12,7 @@ namespace AbyssVehicle
     {
         public static GameObject model = null;
         public static Atlas.Sprite pingSprite = null;
+        public static Sprite saveSprite = null;
         public static Atlas.Sprite crafterSprite = null;
         public static GameObject controlPanel = null;
         public static GameObject cameraGUI = null;
@@ -21,9 +22,11 @@ namespace AbyssVehicle
             VehicleAssets abyssAssets = AssetBundleInterface.GetVehicleAssetsFromBundle("assets/abyss", "AbyssVehicle", "AbyssSpriteAtlas", "PingSprite", "CrafterSprite", "", "");
             model = abyssAssets.model;
             pingSprite = abyssAssets.ping;
+            saveSprite = AssetBundleInterface.LoadAdditionalRawSprite(abyssAssets.abi, "AbyssSpriteAtlas", "PingSprite");
             crafterSprite = abyssAssets.crafter;
             controlPanel = AssetBundleInterface.LoadAdditionalGameObject(abyssAssets.abi, "Control-Panel");
             cameraGUI = AssetBundleInterface.LoadAdditionalGameObject(abyssAssets.abi, "CameraGUI");
+            abyssAssets.Close();
         }
 
         public override Dictionary<TechType, int> Recipe
@@ -93,27 +96,10 @@ namespace AbyssVehicle
             }
         }
 
-        public override GameObject VehicleModel
-        {
-            get
-            {
-                return model;
-            }
-        }
-        public override Atlas.Sprite PingSprite
-        {
-            get
-            {
-                return pingSprite;
-            }
-        }
-        public override Atlas.Sprite CraftingSprite
-        {
-            get
-            {
-                return crafterSprite;
-            }
-        }
+        public override GameObject VehicleModel => model;
+        public override Atlas.Sprite PingSprite => pingSprite;
+        public override Sprite SaveFileSprite => saveSprite;
+        public override Atlas.Sprite CraftingSprite => crafterSprite;
         public override GameObject ControlPanel
         {
             get
@@ -512,41 +498,11 @@ namespace AbyssVehicle
                 return gameObject.EnsureComponent<AbyssEngine>();
             }
         }
-        public override int BaseCrushDepth
-        {
-            get
-            {
-                return 600;
-            }
-        }
-        public override int MaxHealth
-        {
-            get
-            {
-                return 1500;
-            }
-        }
-        public override int Mass
-        {
-            get
-            {
-                return 5000;
-            }
-        }
-        public override int NumModules
-        {
-            get
-            {
-                return 8;
-            }
-        }
-        public override bool HasArms
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override int BaseCrushDepth => 600;
+        public override int MaxHealth => 1500;
+        public override int Mass => 5000;
+        public override int NumModules => 8;
+        public override bool HasArms => false;
         public override VehicleArmsProxy Arms
         {
             get
