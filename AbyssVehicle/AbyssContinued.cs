@@ -30,9 +30,8 @@ namespace AbyssVehicle
         public Transform PlayerCamPivot => Player.main.transform.Find("camPivot");
         public override void Awake()
         {
-            OGVehicleName = "ABY-" + Mathf.RoundToInt(UnityEngine.Random.value * 10000).ToString();
-            vehicleName = OGVehicleName;
-            NowVehicleName = OGVehicleName;
+            string newName = "ABY-" + Mathf.RoundToInt(UnityEngine.Random.value * 10000).ToString();
+            SetName(newName);
             base.Awake();
         }
         public override void Start()
