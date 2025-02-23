@@ -46,6 +46,7 @@ namespace AbyssVehicle
             cams.AddCamera(wideCam, "wide");
             cams.AddCamera(bottomCam, "bottom");
             cams.AddCamera(portCam, "port");
+            SetupMaterialReactor();
         }
         public override void Update()
         {
@@ -92,6 +93,13 @@ namespace AbyssVehicle
             gameObject.GetComponent<AbyssEngine>().backforth = wheelone;
             gameObject.GetComponent<AbyssEngine>().leftright = wheeltwo;
             gameObject.GetComponent<AbyssEngine>().downup = wheelthree;
+        }
+        private void SetupMaterialReactor()
+        {
+            var reactor = transform.Find("MaterialReactor").gameObject.AddComponent<VehicleFramework.VehicleComponents.MaterialReactor>();
+            reactor.Initialize(this, 2, 2, "Abyss Reactor", 500, MaterialReactor.GetBioReactorData());
+            reactor.canViewWhitelist = false;
+            reactor.interactText = "Abyss Bioreactor";
         }
     }
 }
