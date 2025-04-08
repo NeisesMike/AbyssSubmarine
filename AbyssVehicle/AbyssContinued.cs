@@ -32,6 +32,7 @@ namespace AbyssVehicle
         {
             string newName = "ABY-" + Mathf.RoundToInt(UnityEngine.Random.value * 10000).ToString();
             SetName(newName);
+            SetupMaterialReactor();
             base.Awake();
         }
         public override void Start()
@@ -46,7 +47,6 @@ namespace AbyssVehicle
             cams.AddCamera(wideCam, "wide");
             cams.AddCamera(bottomCam, "bottom");
             cams.AddCamera(portCam, "port");
-            SetupMaterialReactor();
         }
         public override void Update()
         {
