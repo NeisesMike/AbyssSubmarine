@@ -25,7 +25,7 @@ namespace AbyssVehicle
             saveSprite = AssetBundleInterface.LoadAdditionalRawSprite(abyssAssets.abi, "AbyssSpriteAtlas", "PingSprite");
             crafterSprite = abyssAssets.crafter;
             controlPanel = AssetBundleInterface.LoadAdditionalGameObject(abyssAssets.abi, "Control-Panel");
-            cameraGUI = AssetBundleInterface.LoadAdditionalGameObject(abyssAssets.abi, "CameraGUI");
+            cameraGUI = AssetBundleInterface.LoadAdditionalGameObject(abyssAssets.abi, "AbyssCameraGUI");
             abyssAssets.Close();
         }
 
