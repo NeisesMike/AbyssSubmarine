@@ -12,7 +12,7 @@ using VehicleFramework.VehicleTypes;
 
 namespace AbyssVehicle
 {
-    [BepInPlugin("com.mikjaw.subnautica.abyss.mod", "AbyssVehicle", "1.3.4")]
+    [BepInPlugin("com.mikjaw.subnautica.abyss.mod", "AbyssVehicle", "1.3.5")]
     [BepInDependency(VehicleFramework.PluginInfo.PLUGIN_GUID, VehicleFramework.PluginInfo.PLUGIN_VERSION)]
     [BepInDependency(Nautilus.PluginInfo.PLUGIN_GUID)]
     public class MainPatcher : BaseUnityPlugin
