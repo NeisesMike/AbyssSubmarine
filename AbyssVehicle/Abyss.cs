@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using VehicleFramework.VehicleParts;
+using VehicleFramework.VehicleBuilding;
 using VehicleFramework.VehicleTypes;
 using VehicleFramework.Engines;
 using VehicleFramework.Assets;
@@ -11,9 +11,9 @@ namespace AbyssVehicle
     public partial class Abyss : Submarine
     {
         public static GameObject model = null;
-        public static Atlas.Sprite pingSprite = null;
+        public static UnityEngine.Sprite pingSprite = null;
         public static Sprite saveSprite = null;
-        public static Atlas.Sprite crafterSprite = null;
+        public static UnityEngine.Sprite crafterSprite = null;
         public static GameObject controlPanel = null;
         public static GameObject cameraGUI = null;
 
@@ -22,7 +22,7 @@ namespace AbyssVehicle
             VehicleAssets abyssAssets = AssetBundleInterface.GetVehicleAssetsFromBundle("assets/abyss", "AbyssVehicle", "AbyssSpriteAtlas", "PingSprite", "CrafterSprite", "", "");
             model = abyssAssets.model;
             pingSprite = abyssAssets.ping;
-            saveSprite = AssetBundleInterface.LoadAdditionalRawSprite(abyssAssets.abi, "AbyssSpriteAtlas", "PingSprite");
+            saveSprite = AssetBundleInterface.LoadAdditionalSprite(abyssAssets.abi, "AbyssSpriteAtlas", "PingSprite");
             crafterSprite = abyssAssets.crafter;
             controlPanel = AssetBundleInterface.LoadAdditionalGameObject(abyssAssets.abi, "Control-Panel");
             cameraGUI = AssetBundleInterface.LoadAdditionalGameObject(abyssAssets.abi, "AbyssCameraGUI");
@@ -97,9 +97,9 @@ namespace AbyssVehicle
         }
 
         public override GameObject VehicleModel => model;
-        public override Atlas.Sprite PingSprite => pingSprite;
+        public override UnityEngine.Sprite PingSprite => pingSprite;
         public override Sprite SaveFileSprite => saveSprite;
-        public override Atlas.Sprite CraftingSprite => crafterSprite;
+        public override UnityEngine.Sprite CraftingSprite => crafterSprite;
         public override GameObject ControlPanel
         {
             get
@@ -122,36 +122,34 @@ namespace AbyssVehicle
                 return transform.Find("ModulesRoot").gameObject;
             }
         }
-        public override List<VehiclePilotSeat> PilotSeats
+        public override VehiclePilotSeat PilotSeat
         {
             get
             {
-                var list = new List<VehicleFramework.VehicleParts.VehiclePilotSeat>();
-                VehicleFramework.VehicleParts.VehiclePilotSeat vps = new VehicleFramework.VehicleParts.VehiclePilotSeat();
+                VehiclePilotSeat vps = new VehiclePilotSeat();
                 Transform mainSeat = transform.Find("PilotSeat");
                 vps.Seat = mainSeat.gameObject;
                 vps.SitLocation = mainSeat.Find("SitLocation").gameObject;
                 vps.LeftHandLocation = mainSeat;
                 vps.RightHandLocation = mainSeat;
                 vps.ExitLocation = mainSeat.Find("ExitLocation");
-                list.Add(vps);
-                return list;
+                return vps;
             }
         }
         public override List<VehicleHatchStruct> Hatches
         {
             get
             {
-                var list = new List<VehicleFramework.VehicleParts.VehicleHatchStruct>();
+                var list = new List<VehicleHatchStruct>();
 
-                VehicleFramework.VehicleParts.VehicleHatchStruct interior_vhs = new VehicleFramework.VehicleParts.VehicleHatchStruct();
+                VehicleHatchStruct interior_vhs = new VehicleHatchStruct();
                 Transform intHatch = transform.Find("Hatches/TopHatch/InsideHatch");
                 interior_vhs.Hatch = intHatch.gameObject;
                 interior_vhs.EntryLocation = intHatch.Find("Entry");
                 interior_vhs.ExitLocation = intHatch.Find("Exit");
                 interior_vhs.SurfaceExitLocation = intHatch.Find("SurfaceExit");
 
-                VehicleFramework.VehicleParts.VehicleHatchStruct exterior_vhs = new VehicleFramework.VehicleParts.VehicleHatchStruct();
+                VehicleHatchStruct exterior_vhs = new VehicleHatchStruct();
                 Transform extHatch = transform.Find("Hatches/TopHatch/OutsideHatch");
                 exterior_vhs.Hatch = extHatch.gameObject;
                 exterior_vhs.EntryLocation = interior_vhs.EntryLocation;
@@ -162,14 +160,14 @@ namespace AbyssVehicle
                 list.Add(exterior_vhs);
 
 
-                VehicleFramework.VehicleParts.VehicleHatchStruct interior_vhs2 = new VehicleFramework.VehicleParts.VehicleHatchStruct();
+                VehicleHatchStruct interior_vhs2 = new VehicleHatchStruct();
                 Transform intHatch2 = transform.Find("Hatches/BottomHatch/InsideHatch");
                 interior_vhs2.Hatch = intHatch2.gameObject;
                 interior_vhs2.EntryLocation = intHatch2.Find("Entry");
                 interior_vhs2.ExitLocation = intHatch2.Find("Exit");
                 interior_vhs2.SurfaceExitLocation = intHatch2.Find("SurfaceExit");
 
-                VehicleFramework.VehicleParts.VehicleHatchStruct exterior_vhs2 = new VehicleFramework.VehicleParts.VehicleHatchStruct();
+                VehicleHatchStruct exterior_vhs2 = new VehicleHatchStruct();
                 Transform extHatch2 = transform.Find("Hatches/BottomHatch/OutsideHatch");
                 exterior_vhs2.Hatch = extHatch2.gameObject;
                 exterior_vhs2.EntryLocation = interior_vhs2.EntryLocation;
@@ -186,17 +184,17 @@ namespace AbyssVehicle
         {
             get
             {
-                var list = new List<VehicleFramework.VehicleParts.VehicleStorage>();
+                var list = new List<VehicleStorage>();
 
                 Transform innate1 = transform.Find("InnateStorages/Storage1");
                 Transform innate2 = transform.Find("InnateStorages/Storage2");
 
-                VehicleFramework.VehicleParts.VehicleStorage IS1 = new VehicleFramework.VehicleParts.VehicleStorage();
+                VehicleStorage IS1 = new VehicleStorage();
                 IS1.Container = innate1.gameObject;
                 IS1.Height = 10;
                 IS1.Width = 8;
                 list.Add(IS1);
-                VehicleFramework.VehicleParts.VehicleStorage IS2 = new VehicleFramework.VehicleParts.VehicleStorage();
+                VehicleStorage IS2 = new VehicleStorage();
                 IS2.Container = innate2.gameObject;
                 IS2.Height = 10;
                 IS2.Width = 8;
@@ -209,7 +207,7 @@ namespace AbyssVehicle
         {
             get
             {
-                var list = new List<VehicleFramework.VehicleParts.VehicleStorage>();
+                var list = new List<VehicleStorage>();
                 return list;
             }
         }
@@ -217,8 +215,8 @@ namespace AbyssVehicle
         {
             get
             {
-                var list = new List<VehicleFramework.VehicleParts.VehicleUpgrades>();
-                VehicleFramework.VehicleParts.VehicleUpgrades vu = new VehicleFramework.VehicleParts.VehicleUpgrades();
+                var list = new List<VehicleUpgrades>();
+                VehicleUpgrades vu = new VehicleUpgrades();
                 vu.Interface = transform.Find("UpgradesInterface").gameObject;
                 vu.Flap = vu.Interface;
                 vu.AnglesClosed = Vector3.zero;
@@ -234,14 +232,14 @@ namespace AbyssVehicle
         {
             get
             {
-                var list = new List<VehicleFramework.VehicleParts.VehicleBattery>();
+                var list = new List<VehicleBattery>();
 
-                VehicleFramework.VehicleParts.VehicleBattery vb1 = new VehicleFramework.VehicleParts.VehicleBattery();
+                VehicleBattery vb1 = new VehicleBattery();
                 vb1.BatterySlot = transform.Find("Batteries/Battery1").gameObject;
                 vb1.BatteryProxy = null;
                 list.Add(vb1);
 
-                VehicleFramework.VehicleParts.VehicleBattery vb2 = new VehicleFramework.VehicleParts.VehicleBattery();
+                VehicleBattery vb2 = new VehicleBattery();
                 vb2.BatterySlot = transform.Find("Batteries/Battery2").gameObject;
                 vb2.BatteryProxy = null;
                 list.Add(vb2);
@@ -249,21 +247,13 @@ namespace AbyssVehicle
                 return list;
             }
         }
-        public override List<VehicleBattery> BackupBatteries
-        {
-            get
-            {
-                var list = new List<VehicleFramework.VehicleParts.VehicleBattery>();
-                return null;
-            }
-        }
         public override List<VehicleFloodLight> HeadLights
         {
             get
             {
-                var list = new List<VehicleFramework.VehicleParts.VehicleFloodLight>();
+                var list = new List<VehicleFloodLight>();
 
-                list.Add(new VehicleFramework.VehicleParts.VehicleFloodLight
+                list.Add(new VehicleFloodLight
                 {
                     Light = transform.Find("lights_parent/headlights/headlight1").gameObject,
                     Angle = 70,
@@ -271,7 +261,7 @@ namespace AbyssVehicle
                     Intensity = 1.3f,
                     Range = 90f
                 });
-                list.Add(new VehicleFramework.VehicleParts.VehicleFloodLight
+                list.Add(new VehicleFloodLight
                 {
                     Light = transform.Find("lights_parent/headlights/headlight2").gameObject,
                     Angle = 70,
@@ -279,7 +269,7 @@ namespace AbyssVehicle
                     Intensity = 1.3f,
                     Range = 90f
                 });
-                list.Add(new VehicleFramework.VehicleParts.VehicleFloodLight
+                list.Add(new VehicleFloodLight
                 {
                     Light = transform.Find("lights_parent/headlights/headlight3").gameObject,
                     Angle = 70,
@@ -287,7 +277,7 @@ namespace AbyssVehicle
                     Intensity = 1.3f,
                     Range = 90f
                 });
-                list.Add(new VehicleFramework.VehicleParts.VehicleFloodLight
+                list.Add(new VehicleFloodLight
                 {
                     Light = transform.Find("lights_parent/headlights/headlight4").gameObject,
                     Angle = 70,
@@ -295,7 +285,7 @@ namespace AbyssVehicle
                     Intensity = 1.3f,
                     Range = 90f
                 });
-                list.Add(new VehicleFramework.VehicleParts.VehicleFloodLight
+                list.Add(new VehicleFloodLight
                 {
                     Light = transform.Find("lights_parent/headlights/headlight5").gameObject,
                     Angle = 70,
@@ -311,8 +301,8 @@ namespace AbyssVehicle
         {
             get
             {
-                var list = new List<VehicleFramework.VehicleParts.VehicleFloodLight>();
-                list.Add(new VehicleFramework.VehicleParts.VehicleFloodLight
+                var list = new List<VehicleFloodLight>();
+                list.Add(new VehicleFloodLight
                 {
                     Light = transform.Find("lights_parent/floodlights/floodlight1").gameObject,
                     Angle = 90,
@@ -320,7 +310,7 @@ namespace AbyssVehicle
                     Intensity = 1,
                     Range = 120f
                 });
-                list.Add(new VehicleFramework.VehicleParts.VehicleFloodLight
+                list.Add(new VehicleFloodLight
                 {
                     Light = transform.Find("lights_parent/floodlights/floodlight2").gameObject,
                     Angle = 90,
@@ -328,7 +318,7 @@ namespace AbyssVehicle
                     Intensity = 1,
                     Range = 120f
                 });
-                list.Add(new VehicleFramework.VehicleParts.VehicleFloodLight
+                list.Add(new VehicleFloodLight
                 {
                     Light = transform.Find("lights_parent/floodlights/floodlight3").gameObject,
                     Angle = 90,
@@ -336,7 +326,7 @@ namespace AbyssVehicle
                     Intensity = 1,
                     Range = 120f
                 });
-                list.Add(new VehicleFramework.VehicleParts.VehicleFloodLight
+                list.Add(new VehicleFloodLight
                 {
                     Light = transform.Find("lights_parent/floodlights/floodlight4").gameObject,
                     Angle = 90,
@@ -344,7 +334,7 @@ namespace AbyssVehicle
                     Intensity = 1,
                     Range = 120f
                 });
-                list.Add(new VehicleFramework.VehicleParts.VehicleFloodLight
+                list.Add(new VehicleFloodLight
                 {
                     Light = transform.Find("lights_parent/floodlights/floodlight5").gameObject,
                     Angle = 90,
@@ -354,41 +344,6 @@ namespace AbyssVehicle
                 });
 
                 return list;
-            }
-        }
-        public override List<GameObject> NavigationPortLights
-        {
-            get
-            {
-                return null;
-            }
-        }
-        public override List<GameObject> NavigationStarboardLights
-        {
-            get
-            {
-                return null;
-            }
-        }
-        public override List<GameObject> NavigationPositionLights
-        {
-            get
-            {
-                return null;
-            }
-        }
-        public override List<GameObject> NavigationWhiteStrobeLights
-        {
-            get
-            {
-                return null;
-            }
-        }
-        public override List<GameObject> NavigationRedStrobeLights
-        {
-            get
-            {
-                return null;
             }
         }
         public override List<GameObject> WaterClipProxies
@@ -440,41 +395,25 @@ namespace AbyssVehicle
                 return transform.Find("Fabricator-Location").gameObject;
             }
         }
-        public override GameObject BoundingBox
+        public override BoxCollider BoundingBoxCollider
         {
             get
             {
-                return transform.Find("BoundingBox").gameObject;
+                return transform.Find("BoundingBox").gameObject.GetComponent<BoxCollider>();
             }
         }
-        public override GameObject CollisionModel
+        public override GameObject[] CollisionModel
         {
             get
             {
-                return transform.Find("CollisionModel").gameObject;
+                return new GameObject[] { transform.Find("CollisionModel").gameObject };
             }
         }
         public override GameObject LeviathanGrabPoint
         {
             get
             {
-                return PilotSeats.First().SitLocation;
-            }
-        }
-        public override GameObject SteeringWheelLeftHandTarget
-        {
-            get
-            {
-                //return transform.Find("Geometry/Interior_Main/SteeringConsole/SteeringConsoleArmature/SteeringRoot 1/SteeringStem1/SteeringStem2/SteeringWheel 1/LeftHandPlug").gameObject;
-                return null;
-            }
-        }
-        public override GameObject SteeringWheelRightHandTarget
-        {
-            get
-            {
-                //return transform.Find("Geometry/Interior_Main/SteeringConsole/SteeringConsoleArmature/SteeringRoot 1/SteeringStem1/SteeringStem2/SteeringWheel 1/RightHandPlug").gameObject;
-                return null;
+                return PilotSeat.SitLocation;
             }
         }
         public override List<Light> InteriorLights
@@ -491,7 +430,7 @@ namespace AbyssVehicle
                 return lights;
             }
         }
-        public override ModVehicleEngine Engine
+        public override VFEngine VFEngine
         {
             get
             {

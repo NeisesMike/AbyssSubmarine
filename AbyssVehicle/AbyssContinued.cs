@@ -10,7 +10,7 @@ using System.IO;
 using System.Reflection;
 
 using UnityEngine.U2D;
-using VehicleFramework.VehicleParts;
+using VehicleFramework.VehicleBuilding;
 using VehicleFramework.VehicleTypes;
 using VehicleFramework.Engines;
 using VehicleFramework.VehicleComponents;
@@ -47,6 +47,18 @@ namespace AbyssVehicle
             cams.AddCamera(wideCam, "wide");
             cams.AddCamera(bottomCam, "bottom");
             cams.AddCamera(portCam, "port");
+
+            /*
+            wideCam.gameObject.AddComponent<BoxCollider>();
+
+            Subsystem testSys = wideCam.gameObject.AddComponent<Subsystem>()
+                .WithOnHandHover(x => ErrorMessage.AddWarning("test"))
+                .WithOnTakeDamage(x => ErrorMessage.AddWarning($"take damage {x.damage}"))
+                .WithMaxHealth(150);
+
+            gameObject.AddComponent<VehicleDamageTracker>()
+                .WithSubsystem(testSys);
+            */
         }
         public override void Update()
         {
@@ -96,8 +108,8 @@ namespace AbyssVehicle
         }
         private void SetupMaterialReactor()
         {
-            var reactor = transform.Find("MaterialReactor").gameObject.AddComponent<VehicleFramework.VehicleComponents.MaterialReactor>();
-            reactor.Initialize(this, 2, 2, "Abyss Reactor", 500, MaterialReactor.GetBioReactorData());
+            var reactor = transform.Find("MaterialReactor").gameObject.AddComponent<VehicleFramework.VehicleChildComponents.MaterialReactor>();
+            reactor.Initialize(this, 2, 2, "Abyss Reactor", 500, VehicleFramework.VehicleChildComponents.MaterialReactor.GetBioReactorData());
             reactor.canViewWhitelist = false;
             reactor.interactText = "Abyss Bioreactor";
         }

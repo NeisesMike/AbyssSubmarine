@@ -146,15 +146,15 @@ namespace AbyssVehicle
             Vector2 mouseDir = GameInput.GetLookDelta();
             float xRot = mouseDir.x;
             float yRot = mouseDir.y;
-            rb.AddTorque(mv.transform.up * xRot * yawFactor * Time.deltaTime, ForceMode.VelocityChange);
-            rb.AddTorque(mv.transform.right * yRot * -pitchFactor * Time.deltaTime, ForceMode.VelocityChange);
+            RB.AddTorque(MV.transform.up * xRot * yawFactor * Time.deltaTime, ForceMode.VelocityChange);
+            RB.AddTorque(MV.transform.right * yRot * -pitchFactor * Time.deltaTime, ForceMode.VelocityChange);
         }
-        public override void DrainPower(Vector3 moveDirection)
+        protected override void DrainPower(Vector3 moveDirection)
         {
             float scalarFactor = 0.36f;
             float basePowerConsumptionPerSecond = (moveDirection.x * leftright.GetWheelPowerConsumption()) + (moveDirection.y * downup.GetWheelPowerConsumption()) + (moveDirection.z * backforth.GetWheelPowerConsumption());
-            float upgradeModifier = Mathf.Pow(0.85f, mv.numEfficiencyModules);
-            mv.GetComponent<VehicleFramework.PowerManager>().TrySpendEnergy(scalarFactor * basePowerConsumptionPerSecond * upgradeModifier * Time.deltaTime);
+            float upgradeModifier = Mathf.Pow(0.85f, MV.NumEfficiencyModules);
+            MV.GetComponent<VehicleFramework.VehicleComponents.PowerManager>().TrySpendEnergy(scalarFactor * basePowerConsumptionPerSecond * upgradeModifier * Time.deltaTime);
         }
         /*
         public override void FixedUpdate()

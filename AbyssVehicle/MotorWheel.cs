@@ -25,8 +25,8 @@ namespace AbyssVehicle
         };
 
         public static string InstructionString = 
-            uGUI.FormatButton(GameInput.Button.LeftHand, true) + " increases\n" +
-            uGUI.FormatButton(GameInput.Button.RightHand) + " decreases";
+            GameInput.FormatButton(GameInput.Button.LeftHand, true) + " increases\n" +
+            GameInput.FormatButton(GameInput.Button.RightHand) + " decreases";
 
         public MotorWheelType mwt = 0;
         public VehicleFramework.ModVehicle mv = null;

@@ -12,7 +12,7 @@ using VehicleFramework.VehicleTypes;
 
 namespace AbyssVehicle
 {
-    [BepInPlugin("com.mikjaw.subnautica.abyss.mod", "AbyssVehicle", "1.3.5")]
+    [BepInPlugin("com.mikjaw.subnautica.abyss.mod", "AbyssVehicle", "2.0.0")]
     [BepInDependency(VehicleFramework.PluginInfo.PLUGIN_GUID, VehicleFramework.PluginInfo.PLUGIN_VERSION)]
     [BepInDependency(Nautilus.PluginInfo.PLUGIN_GUID)]
     public class MainPatcher : BaseUnityPlugin
@@ -27,13 +27,13 @@ namespace AbyssVehicle
             Abyss.GetAssets();
             Submarine abyss = Abyss.model.EnsureComponent<Abyss>() as Submarine;
             abyss.name = "Abyss"; // hovertext and spawn-command name
-            VehicleRegistrar.RegisterVehicleLater(abyss); // set it and forget it
+            VehicleFramework.Admin.VehicleRegistrar.RegisterVehicleLater(abyss); // set it and forget it
             //UWE.CoroutineHost.StartCoroutine(Register(abyss)); // manage registration closely
         }
 
         public System.Collections.IEnumerator Register(Submarine abyss)
         {
-            UnityEngine.Coroutine abyssRegistration = UWE.CoroutineHost.StartCoroutine(VehicleRegistrar.RegisterVehicle(abyss));
+            UnityEngine.Coroutine abyssRegistration = UWE.CoroutineHost.StartCoroutine(VehicleFramework.Admin.VehicleRegistrar.RegisterVehicle(abyss));
             yield return abyssRegistration;
             // do something after registration is complete
         }
