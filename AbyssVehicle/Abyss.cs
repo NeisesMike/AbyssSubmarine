@@ -399,7 +399,7 @@ namespace AbyssVehicle
         {
             get
             {
-                return transform.Find("BoundingBox").gameObject.GetComponent<BoxCollider>();
+                return transform.Find("BoundingBox/Cube").gameObject.GetComponent<BoxCollider>();
             }
         }
         public override GameObject[] CollisionModel
