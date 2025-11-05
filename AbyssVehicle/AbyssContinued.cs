@@ -13,7 +13,7 @@ using UnityEngine.U2D;
 using VehicleFramework.VehicleBuilding;
 using VehicleFramework.VehicleTypes;
 using VehicleFramework.Engines;
-using VehicleFramework.VehicleComponents;
+using VehicleFramework.VehicleRootComponents;
 
 namespace AbyssVehicle
 {

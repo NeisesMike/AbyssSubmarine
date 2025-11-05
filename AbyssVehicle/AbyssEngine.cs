@@ -154,7 +154,7 @@ namespace AbyssVehicle
             float scalarFactor = 0.36f;
             float basePowerConsumptionPerSecond = (moveDirection.x * leftright.GetWheelPowerConsumption()) + (moveDirection.y * downup.GetWheelPowerConsumption()) + (moveDirection.z * backforth.GetWheelPowerConsumption());
             float upgradeModifier = Mathf.Pow(0.85f, MV.NumEfficiencyModules);
-            MV.GetComponent<VehicleFramework.VehicleComponents.PowerManager>().TrySpendEnergy(scalarFactor * basePowerConsumptionPerSecond * upgradeModifier * Time.deltaTime);
+            MV.GetComponent<VehicleFramework.VehicleRootComponents.PowerManager>().TrySpendEnergy(scalarFactor * basePowerConsumptionPerSecond * upgradeModifier * Time.deltaTime);
         }
         /*
         public override void FixedUpdate()
