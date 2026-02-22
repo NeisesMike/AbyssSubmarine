@@ -441,7 +441,6 @@ namespace AbyssVehicle
         public override int MaxHealth => 1500;
         public override int Mass => 5000;
         public override int NumModules => 8;
-        public override bool HasArms => false;
         public override VehicleArmsProxy Arms
         {
             get
