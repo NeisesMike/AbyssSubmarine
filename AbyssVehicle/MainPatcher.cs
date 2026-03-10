@@ -25,7 +25,6 @@ namespace AbyssVehicle
             var harmony = new Harmony("com.mikjaw.subnautica.abyss.mod");
             harmony.PatchAll();
             Abyss.GetAssets();
-            Abyss.model.transform.localScale = 3f * UnityEngine.Vector3.one;
             Submarine abyss = Abyss.model.EnsureComponent<Abyss>() as Submarine;
             abyss.name = "Abyss"; // hovertext and spawn-command name
             VehicleFramework.Admin.VehicleRegistrar.RegisterVehicleLater(abyss); // set it and forget it

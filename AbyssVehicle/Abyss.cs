@@ -100,12 +100,17 @@ namespace AbyssVehicle
         public override UnityEngine.Sprite PingSprite => pingSprite;
         public override Sprite SaveFileSprite => saveSprite;
         public override UnityEngine.Sprite CraftingSprite => crafterSprite;
+        private GameObject innerControlPanel;
         public override GameObject ControlPanel
         {
             get
             {
-                controlPanel.transform.SetParent(transform);
-                return controlPanel;
+                if(innerControlPanel == null)
+                {
+                    innerControlPanel = GameObject.Instantiate(controlPanel);
+                }
+                innerControlPanel.transform.SetParent(transform);
+                return innerControlPanel;
             }
         }
         public override GameObject StorageRootObject
